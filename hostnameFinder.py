@@ -53,17 +53,17 @@ def main():
   if args.domain:
     fqdnList = build_fqdns(parse_hostnames(),args.domain)
 
-  filename = '%s_resolutions.csv'  %args.domain
-  resolutions = open(filename,'w+')
-  writer = csv.writer(resolutions)
-  pool = multiprocessing.Pool(100)
-  for fqdn in pool.map(enumnerate_fqdns,fqdnList):
-    if fqdn != None:
-      for k, v in fqdn.iteritems():
-        print '%s %-20s : %s' %('[+]', k, v)
-        result = (k, v)
-        writer.writerow(result)
-  resolutions.close()
+    filename = '%s_resolutions.csv'  %args.domain
+    resolutions = open(filename,'w+')
+    writer = csv.writer(resolutions)
+    pool = multiprocessing.Pool(100)
+    for fqdn in pool.map(enumnerate_fqdns,fqdnList):
+      if fqdn != None:
+        for k, v in fqdn.iteritems():
+          print '%s %-20s : %s' %('[+]', k, v)
+          result = (k, v)
+          writer.writerow(result)
+    resolutions.close()
 
 if __name__ == '__main__':
   main()
