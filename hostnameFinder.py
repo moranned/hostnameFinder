@@ -2,8 +2,11 @@ __author__ = 'ned@shadowserver.org'
 
 import csv
 import argparse
+import datetime
 import dns.resolver
 import multiprocessing
+
+from domain import Domain
 
 def parse_hostnames():
   '''
@@ -31,17 +34,17 @@ def build_fqdns(hostnames, domain):
   return fqdnList
 
 def enumnerate_fqdns(fqdn):
-  resolution = {}
   '''
   :param list of fqdns fed via Pool:
   :return A record
   '''
+  ts = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
   try:
     resolver = dns.resolver.Resolver()
     resolver.nameserver = '8.8.8.8'
     answer = resolver.query(fqdn,'A')
     for data in answer:
-      resolution[fqdn] = data.address
+      resolution = Domain(fqdn,data.address,ts)
     return resolution
   except Exception, e:
     pass
@@ -59,10 +62,9 @@ def main():
     pool = multiprocessing.Pool(100)
     for fqdn in pool.map(enumnerate_fqdns,fqdnList):
       if fqdn != None:
-        for k, v in fqdn.iteritems():
-          print '%s %-20s : %s' %('[+]', k, v)
-          result = (k, v)
-          writer.writerow(result)
+        print '%s resolved to %s at %s' %(fqdn.fqdn, fqdn.ipaddr, fqdn.ts)
+        result = (fqdn.fqdn, fqdn.ipaddr, fqdn.ts)
+        writer.writerow(result)
     resolutions.close()
 
 if __name__ == '__main__':

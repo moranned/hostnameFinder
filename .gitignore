@@ -1,2 +1,5 @@
 *.csv
 .git
+*.log
+test.lst
+*.pyc
