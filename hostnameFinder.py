@@ -44,8 +44,8 @@ def enumnerate_fqdns(fqdn):
     resolver.nameserver = '8.8.8.8'
     answer = resolver.query(fqdn, 'A')
     for data in answer:
-      resolution = Domain(fqdn, data.address, ts)
-      return resolution
+      ipaddr = data.address
+    return Domain(fqdn, data.address, ts)
   except Exception, e:
     pass
 
