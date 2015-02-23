@@ -36,7 +36,7 @@ def build_fqdns(hostnames, domain):
 def enumnerate_fqdns(fqdn):
   '''
   :param list of fqdns fed via Pool:
-  :return A record
+  :return Domain object
   '''
   ts = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
   try:
