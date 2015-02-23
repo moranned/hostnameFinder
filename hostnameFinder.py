@@ -45,7 +45,7 @@ def enumnerate_fqdns(fqdn):
     answer = resolver.query(fqdn, 'A')
     for data in answer:
       ipaddr = data.address
-    return Domain(fqdn, data.address, ts)
+    return Domain(fqdn, ipaddr, ts)
   except Exception, e:
     pass
 
