@@ -5,7 +5,6 @@ import argparse
 import datetime
 import dns.resolver
 import multiprocessing
-
 from domain import Domain
 
 def parse_hostnames():
@@ -28,7 +27,7 @@ def build_fqdns(hostnames, domain):
   '''
   fqdnList = []
   for host in hostnames:
-    fqdn = '%s.%s' %(host,domain)
+    fqdn = '%s.%s' %(host, domain)
     if fqdn not in fqdnList:
       fqdnList.append(fqdn)
   return fqdnList
@@ -42,10 +41,10 @@ def enumnerate_fqdns(fqdn):
   try:
     resolver = dns.resolver.Resolver()
     resolver.nameserver = '8.8.8.8'
-    answer = resolver.query(fqdn,'A')
+    answer = resolver.query(fqdn, 'A')
     for data in answer:
-      resolution = Domain(fqdn,data.address,ts)
-    return resolution
+      resolution = Domain(fqdn, data.address, ts)
+      return resolution
   except Exception, e:
     pass
 
@@ -57,10 +56,10 @@ def main():
     fqdnList = build_fqdns(parse_hostnames(),args.domain)
 
     filename = '%s_resolutions.csv'  %args.domain
-    resolutions = open(filename,'w+')
+    resolutions = open(filename, 'w+')
     writer = csv.writer(resolutions)
     pool = multiprocessing.Pool(100)
-    for fqdn in pool.map(enumnerate_fqdns,fqdnList):
+    for fqdn in pool.map(enumnerate_fqdns, fqdnList):
       if fqdn != None:
         print '%s resolved to %s at %s' %(fqdn.fqdn, fqdn.ipaddr, fqdn.ts)
         result = (fqdn.fqdn, fqdn.ipaddr, fqdn.ts)
