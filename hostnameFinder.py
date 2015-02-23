@@ -30,6 +30,7 @@ def build_fqdns(hostnames, domain):
     fqdn = '%s.%s' %(host, domain)
     if fqdn not in fqdnList:
       fqdnList.append(fqdn)
+  fqdnList.append(domain)
   return fqdnList
 
 def enumnerate_fqdns(fqdn):
